@@ -9,7 +9,7 @@ def extract_date_from_filename(filename):
     match = re.search(r'GMT(\d{8})', filename)
     if match:
         dt = datetime.strptime(match.group(1), "%Y%m%d")
-        return dt.strftime("%B %-d, %Y")
+        return dt.strftime("%B %d, %Y").replace(" 0", " ")
     return "Unknown"
 
 def save_output(input_path, content):
