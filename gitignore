@@ -1,0 +1,19 @@
+# Ignore generated transcript outputs
+*.formatted.md
+*_grammar_review.txt
+glossary_suggestions.txt
+
+# Ignore temp files or test dumps
+*.tmp
+*.autofixed.tmp
+
+# Ignore Python environment
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Optional: VS Code/IDE
+.vscode/
+.idea/
