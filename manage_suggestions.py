@@ -22,8 +22,7 @@ def manage():
     ignore_list = set(load_json("ignore_acronyms.json"))
     stats = load_stats()
 
-    print("📚 Manage glossary and ignore list suggestions:
-")
+    print("📚 Manage glossary and ignore list suggestions:")
     for term, count in stats.most_common():
         if term in glossary or term in ignore_list:
             continue
@@ -43,11 +42,9 @@ def manage():
             ignore_list.add(term)
             print(f"✅ Added '{term}' to ignore list.")
         elif choice == "s" or choice == "":
-            print("⏭ Skipped.
-")
+            print("⏭ Skipped.")
         else:
-            print("⚠️ Invalid choice. Skipped.
-")
+            print("⚠️ Invalid choice. Skipped.")
 
     save_json(glossary, "glossary.json")
     save_json(list(ignore_list), "ignore_acronyms.json")
