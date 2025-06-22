@@ -1,106 +1,83 @@
-# 📝 Transcript Formatter (Markdown Output)
+# Transcript Formatter
 
-This Python project converts raw meeting transcripts (e.g., `.txt` or `.vtt` files) into clean, structured **Markdown documents**.
-
-It performs:
-- Timestamp and numeric sequence removal
-- Speaker grouping and turn detection
-- Paragraph splitting using `nltk` for more natural speech handling
-- Markdown formatting with metadata (date, attendees)
-- *(Optional)* Summary and action item extraction
-- *(Optional)* Glossary-based substitutions for domain-specific corrections
-- *(Optional)* Output file redirection to a specific folder
-- *(Optional)* Acronym review, suggestion tracking, and glossary promotion
+A modular, CLI-driven Python tool to convert transcript files (e.g., `.vtt`, `.txt`) into clean, structured Markdown output. Designed for enterprise use, it supports glossary-based substitutions, grammar correction, and optional summarization.
 
 ---
 
-## 🧱 Project Structure
+## 🔧 Features
+
+- ✅ Converts `.vtt` and `.txt` transcripts to Markdown
+- ✅ Aggregates by speaker and paragraphs
+- ✅ Applies glossary-based substitutions (e.g., "5 9" → "Five9")
+- ✅ Optional grammar correction using LanguageTool
+- ✅ Optional summary and action item extraction
+- ✅ Outputs Markdown and optional review logs
+
+---
+
+## 🧠 Architecture
 
 ```
-transcript_formatter/
-├── main.py                      # CLI entry point
-├── parser.py                    # Cleans input
-├── grouper.py                   # Groups by speaker
-├── splitter.py                  # Splits long turns
-├── markdown_formatter.py        # Builds Markdown
-├── summarizer.py                # Summary and action items
-├── substituter.py               # Glossary-based substitutions
-├── glossary_stats.py            # Tracks unknown acronym frequency
-├── promote_to_glossary.py       # (Deprecated - merged)
-├── manage_suggestions.py        # CLI tool to promote to glossary or ignore
-├── glossary.json                # Substitution glossary
-├── ignore_acronyms.json         # Terms to skip during suggestion
-├── sort_glossary.py             # Sorts glossary entries
-├── acronym_stats.json           # Frequency of unknown terms (auto-generated)
-├── glossary_suggestions.txt     # Context log of unknown terms (auto-generated)
-└── README.md
+pipeline_controller.py
+ ├── clean_input()           # Strip VTT formatting
+ ├── group_by_speaker()      # Aggregate by speaker
+ ├── split_paragraphs()      # Sentence/paragraph splitting
+ ├── apply_auto_fixes()      # Safe grammar rules (e.g., spacing)
+ ├── apply_substitutions()   # Glossary fixes
+ ├── check_paragraph()       # Grammar review using LanguageTool
+ ├── generate_summary()      # Optional summary/actions
+ └── generate_markdown()     # Final Markdown output
 ```
 
 ---
 
-## 🚀 Installation
-
-> Requires Python 3.9 or newer.
+## 🚀 Usage
 
 ```bash
-pip install nltk
-python -m nltk.downloader punkt
+python pipeline_controller.py your_transcript.vtt --grammar-check --substitute-glossary --with-summary --output-dir ./output
 ```
+
+### CLI Options
+
+| Flag                 | Description                                 |
+|----------------------|---------------------------------------------|
+| `--grammar-check`     | Enable grammar checking (after auto-fix)    |
+| `--substitute-glossary` | Apply glossary substitutions                |
+| `--with-summary`       | Include summary and action item section     |
+| `--output-dir`         | Output location for .md and logs (default: `.`) |
 
 ---
 
-## 🧪 CLI Usage
+## 📄 Output Files
 
-```bash
-python main.py <input_file> [--with-summary] [--debug-no-summary] [--substitute-glossary] [--output-dir DIR]
-```
-
-### Example:
-
-```bash
-python main.py myfile.vtt --with-summary --substitute-glossary --output-dir ./output
-```
+- `*.formatted.md` — final transcript
+- `*_grammar_review.txt` — grammar suggestions (only if issues found)
+- `glossary_suggestions.txt` — acronyms/tokens not in the glossary
 
 ---
 
-## 🧠 Glossary and Suggestion Management
+## 🔭 Next Considerations
 
-### Track unknowns and review them:
-
-```bash
-python main.py transcript.vtt --substitute-glossary
-```
-
-- This will update:
-  - `glossary_suggestions.txt` — with context
-  - `acronym_stats.json` — with frequency
-
-### Promote unknown terms with 1-key selection:
-
-```bash
-python manage_suggestions.py
-```
-
-- `[p]` Promote to glossary
-- `[i]` Add to ignore list
-- `[s]` Skip for now
+- [ ] Interactive glossary manager (promote/ignore from review file)
+- [ ] Grammar rule toggles (`--log-typos`, `--log-style`)
+- [ ] Markdown formatting themes or templates
+- [ ] Add acronym context window around glossary hits
+- [ ] Auto-promote frequently corrected glossary entries
+- [ ] Optional `.docx` export
+- [ ] Slack or GitHub bot integration for uploads
+- [ ] Web UI for uploading transcripts and downloading output
+- [ ] Batch mode / directory processing
 
 ---
 
-## 🛠 Features Roadmap
+## 🧪 Requirements
 
-- [x] Summary and action item scaffolding
-- [x] Glossary-based substitution
-- [x] Acronym context logging + frequency tracking
-- [x] Promote-to-glossary + ignore flow
-- [x] Optional grammar autofix with `--autofix-grammar`
-- [ ] `.docx` or `.pdf` export
-- [ ] NLP-based topic detection
-- [ ] Git-integrated glossary sync
+- Python 3.8+
+- `language-tool-python`
+- Optional: `nltk` (for smarter paragraph splitting)
 
 ---
 
-## 👥 Maintainers
+## 🙌 Acknowledgments
 
-- Matt Coblentz (@matthewc100)
-- OpenAI GPT Architecture Assistant
+Built with care and collaboration — transcript processing reimagined.
