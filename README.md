@@ -1,83 +1,37 @@
 # Transcript Formatter
 
-A modular, CLI-driven Python tool to convert transcript files (e.g., `.vtt`, `.txt`) into clean, structured Markdown output. Designed for enterprise use, it supports glossary-based substitutions, grammar correction, and optional summarization.
+CLI tool to convert `.vtt` or `.txt` transcripts into structured Markdown. Includes speaker grouping, glossary substitution, grammar review, action item and summary extraction.
 
----
+## ✅ Features
 
-## 🔧 Features
+- 🎤 Speaker grouping
+- ✂️ Paragraph splitting
+- 📚 Glossary substitution and acronym logging
+- 🧠 Grammar check (via LanguageTool)
+- 🩹 Optional grammar autofix (e.g. spacing)
+- ✅ Action item extraction with confidence scoring
+- 📋 Summary generation (stubbed)
+- 📄 Markdown output with logs
 
-- ✅ Converts `.vtt` and `.txt` transcripts to Markdown
-- ✅ Aggregates by speaker and paragraphs
-- ✅ Applies glossary-based substitutions (e.g., "5 9" → "Five9")
-- ✅ Optional grammar correction using LanguageTool
-- ✅ Optional summary and action item extraction
-- ✅ Outputs Markdown and optional review logs
-
----
-
-## 🧠 Architecture
-
-```
-pipeline_controller.py
- ├── clean_input()           # Strip VTT formatting
- ├── group_by_speaker()      # Aggregate by speaker
- ├── split_paragraphs()      # Sentence/paragraph splitting
- ├── apply_auto_fixes()      # Safe grammar rules (e.g., spacing)
- ├── apply_substitutions()   # Glossary fixes
- ├── check_paragraph()       # Grammar review using LanguageTool
- ├── generate_summary()      # Optional summary/actions
- └── generate_markdown()     # Final Markdown output
-```
-
----
-
-## 🚀 Usage
+## 🚀 CLI Usage
 
 ```bash
-python pipeline_controller.py your_transcript.vtt --grammar-check --substitute-glossary --with-summary --output-dir ./output
+python pipeline_controller.py input_file.vtt [options]
 ```
 
-### CLI Options
+### 🔧 Options
 
-| Flag                 | Description                                 |
-|----------------------|---------------------------------------------|
-| `--grammar-check`     | Enable grammar checking (after auto-fix)    |
-| `--substitute-glossary` | Apply glossary substitutions                |
-| `--with-summary`       | Include summary and action item section     |
-| `--output-dir`         | Output location for .md and logs (default: `.`) |
+| Flag                      | Description                                                    |
+|---------------------------|----------------------------------------------------------------|
+| `--with-summary`          | Enables summary **and** action item extraction                 |
+| `--grammar-check`         | Performs grammar validation using LanguageTool (Java required)|
+| `--autofix-grammar`       | Applies safe grammar fixes (e.g., spacing)                     |
+| `--substitute-glossary`   | Replaces known glossary terms and flags unknown acronyms       |
+| `--debug-actions`         | Prints match reasoning when action items are detected          |
+| `--output-dir PATH`       | Where to save output Markdown and logs (default: `.`)          |
 
----
+## 🧪 Example
 
-## 📄 Output Files
-
-- `*.formatted.md` — final transcript
-- `*_grammar_review.txt` — grammar suggestions (only if issues found)
-- `glossary_suggestions.txt` — acronyms/tokens not in the glossary
-
----
-
-## 🔭 Next Considerations
-
-- [ ] Interactive glossary manager (promote/ignore from review file)
-- [ ] Grammar rule toggles (`--log-typos`, `--log-style`)
-- [ ] Markdown formatting themes or templates
-- [ ] Add acronym context window around glossary hits
-- [ ] Auto-promote frequently corrected glossary entries
-- [ ] Optional `.docx` export
-- [ ] Slack or GitHub bot integration for uploads
-- [ ] Web UI for uploading transcripts and downloading output
-- [ ] Batch mode / directory processing
-
----
-
-## 🧪 Requirements
-
-- Python 3.8+
-- `language-tool-python`
-- Optional: `nltk` (for smarter paragraph splitting)
-
----
-
-## 🙌 Acknowledgments
-
-Built with care and collaboration — transcript processing reimagined.
+```bash
+python pipeline_controller.py meeting.vtt --with-summary --grammar-check --autofix-grammar --substitute-glossary --output-dir ./output
+```

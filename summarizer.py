@@ -1,34 +1,11 @@
 # summarizer.py
-# Provides scaffolding for future summary and action item generation.
-# Currently includes placeholder logic with hooks for NLP-based enhancements.
+# Routes summary and action item extraction to modular detectors
 
-def generate_summary(speaker_blocks):
-    """
-    Generate a natural language summary of the conversation.
+from summary_extractor import extract_summary
+from action_extractor import extract_action_items as extract_actions
 
-    Parameters:
-        speaker_blocks (list of tuples): [(speaker_name, [paragraphs...]), ...]
+def generate_summary(blocks):
+    return extract_summary(blocks)
 
-    Returns:
-        str: Summary paragraph
-    """
-    # Placeholder logic for now — real implementation could use keyword extraction,
-    # sentence selection, or LLM summarization.
-    return "Summary generation is not yet implemented. Placeholder summary inserted."
-
-
-def extract_action_items(speaker_blocks):
-    """
-    Extract a list of action items mentioned during the meeting.
-
-    Parameters:
-        speaker_blocks (list of tuples): [(speaker_name, [paragraphs...]), ...]
-
-    Returns:
-        list of str: Action item descriptions
-    """
-    # Placeholder action items — in the future, use keyword rules or NLP to extract
-    return [
-        "[ ] Placeholder action item: Add real extraction logic.",
-        "[ ] Placeholder action item: Replace with actual follow-up tasks."
-    ]
+def extract_action_items(blocks, debug=False):  # ← Add debug parameter here
+    return extract_actions(blocks, debug=debug)  # ← Pass it through
